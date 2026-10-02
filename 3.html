@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미래 탐험 렌즈: 나의 관점 & 진로 캐릭터 찾기</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    .perspective-grid {
+      background-size: 28px 28px;
+      background-image: radial-gradient(circle, rgba(99, 102, 241, 0.12) 1.5px, transparent 1.5px);
+    }
+    .fade-in-up {
+      animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(14px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .option-card:hover .badge-letter {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between antialiased perspective-grid select-none">
+
+  <header class="w-full bg-white/85 backdrop-blur-md border-b border-indigo-100/80 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <span class="text-2xl p-1 bg-indigo-50 rounded-xl border border-indigo-100">🔮</span>
+        <div>
+          <h1 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">미래 탐험 렌즈</h1>
+          <p class="text-[11px] text-indigo-600 font-semibold">중3을 위한 가치관 & 진로 탐색</p>
+        </div>
+      </div>
+      <button id="btnResetHeader" class="hidden text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold transition-all active:scale-95 flex items-center gap-1 border border-slate-200">
+        <span>처음부터</span>
+        <span>↺</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-xl w-full mx-auto px-4 py-6 flex-grow flex items-center justify-center">
+
+    <!-- 1. Intro Screen -->
+    <section id="screenIntro" class="w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-100/60 border border-indigo-50 text-center fade-in-up">
+      <div class="inline-flex p-4 rounded-3xl bg-gradient-to-tr from-indigo-500 to-violet-500 text-white text-4xl mb-4 shadow-lg shadow-indigo-200">
+        🧭
+      </div>
+      <div class="flex justify-center mb-2.5">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-100 text-xs font-bold rounded-full">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse"></span>
+          중3 맞춤형 13문항 분기 테스트
+        </span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight mb-3">
+        내가 세상을 바라보는<br>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">진짜 렌즈(관점)</span>는 뭘까?
+      </h2>
+      <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 font-normal">
+        같은 상황도 사람마다 다르게 보입니다.<br class="hidden sm:inline">
+        내 선택을 따라가며 <strong>어른이 된 나의 멋진 모습</strong>과<br class="hidden sm:inline">
+        <strong>나만의 찰떡 진로 캐릭터</strong>를 찾아보세요!
+      </p>
+
+      <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 text-left mb-6 text-xs sm:text-sm text-slate-600 space-y-2.5">
+        <div class="flex items-start gap-2.5">
+          <span class="text-indigo-600 font-bold text-sm">💡</span>
+          <span>내 답변에 따라 다음 질문이 실시간으로 바뀌는 분기 로직</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="text-indigo-600 font-bold text-sm">🎯</span>
+          <span>정답도 오답도 없음! 평소 마음에 끌리는 쪽을 톡 누르면 끝</span>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="text-indigo-600 font-bold text-sm">📋</span>
+          <span>결과 복사 기능으로 수업 과제/패들렛에 바로 공유 가능</span>
+        </div>
+      </div>
+
+      <button id="btnStart" class="w-full bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg shadow-indigo-200 transition-all text-base flex items-center justify-center gap-2">
+        <span>탐색 시작하기 (Start)</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </section>
+
+    <!-- 2. Quiz Question Screen -->
+    <section id="screenQuiz" class="w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-100/60 border border-indigo-50 hidden">
+      <div class="mb-5">
+        <div class="flex items-center justify-between mb-2">
+          <span id="badgeStep" class="px-2.5 py-1 bg-indigo-50 text-indigo-700 font-extrabold text-xs rounded-lg border border-indigo-100">
+            STEP 1 • Q1
+          </span>
+          <span id="pathIndicator" class="text-[11px] font-medium text-slate-400 font-mono">
+            탐험 진행 중...
+          </span>
+        </div>
+        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+          <div id="progressBar" class="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-300 rounded-full" style="width: 25%"></div>
+        </div>
+      </div>
+
+      <!-- Question Title -->
+      <h3 id="questionText" class="text-base sm:text-lg font-bold text-slate-900 leading-snug mb-6 min-h-[56px] flex items-center bg-slate-50/70 p-4 rounded-2xl border border-slate-100">
+        질문 로딩 중...
+      </h3>
+
+      <!-- Choice Buttons -->
+      <div class="space-y-3.5">
+        <button id="btnOptionA" class="option-card w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/40 active:scale-[0.98] transition-all group relative bg-white">
+          <div class="flex items-start gap-3.5">
+            <span class="badge-letter flex-shrink-0 w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center font-black text-sm text-slate-600 transition-all shadow-xs">
+              A
+            </span>
+            <div class="flex-grow pt-0.5">
+              <p id="textOptionA" class="text-slate-800 font-semibold text-sm sm:text-base leading-relaxed group-hover:text-indigo-950">
+                선택지 A 내용
+              </p>
+            </div>
+          </div>
+        </button>
+
+        <button id="btnOptionB" class="option-card w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/40 active:scale-[0.98] transition-all group relative bg-white">
+          <div class="flex items-start gap-3.5">
+            <span class="badge-letter flex-shrink-0 w-8 h-8 rounded-xl bg-slate-100 group-hover:bg-indigo-600 group-hover:text-white flex items-center justify-center font-black text-sm text-slate-600 transition-all shadow-xs">
+              B
+            </span>
+            <div class="flex-grow pt-0.5">
+              <p id="textOptionB" class="text-slate-800 font-semibold text-sm sm:text-base leading-relaxed group-hover:text-indigo-950">
+                선택지 B 내용
+              </p>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center text-xs text-slate-400">
+        <button id="btnPrev" class="hover:text-slate-700 flex items-center gap-1.5 font-bold transition-colors py-1 px-2 rounded-lg hover:bg-slate-100">
+          <span>← 이전 질문으로</span>
+        </button>
+        <span class="text-[11px] text-slate-400">마음에 닿는 답변을 선택하세요</span>
+      </div>
+    </section>
+
+    <!-- 3. Result Screen -->
+    <section id="screenResult" class="w-full bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-100/60 border border-indigo-50 hidden fade-in-up">
+      
+      <!-- Result Hero Card -->
+      <div id="resultHero" class="rounded-3xl p-6 sm:p-7 text-center text-white mb-6 relative overflow-hidden shadow-lg">
+        <div class="relative z-10">
+          <div class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-black uppercase tracking-wider mb-2">
+            나의 미래 관점 & 캐릭터 분석 결과
+          </div>
+          <div id="resIcon" class="text-5xl sm:text-6xl mb-2 drop-shadow-md">🚀</div>
+          <h2 id="resTitle" class="text-2xl sm:text-3xl font-black tracking-tight mb-1">
+            세상 개척자
+          </h2>
+          <p id="resSubtitle" class="text-sm font-semibold opacity-95">
+            아이디어 뱅크 & 혁신 크리에이터
+          </p>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="space-y-4 text-left">
+        <!-- 1. 관점 (세상을 보는 렌즈) -->
+        <div class="p-4 sm:p-5 bg-slate-50 border border-slate-200/80 rounded-2xl">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">🔍</span>
+            <h4 class="font-extrabold text-sm sm:text-base text-slate-900">내가 세상을 바라보는 렌즈 (관점)</h4>
+          </div>
+          <p id="resPerspective" class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-7 font-medium">
+            관점 설명이 들어갑니다.
+          </p>
+        </div>
+
+        <!-- 2. 가치관 -->
+        <div class="p-4 sm:p-5 bg-indigo-50/70 border border-indigo-100 rounded-2xl">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">💎</span>
+            <h4 class="font-extrabold text-sm sm:text-base text-indigo-950">내 마음속 1순위 핵심 가치관</h4>
+          </div>
+          <div id="resValues" class="flex flex-wrap gap-1.5 pl-7 mt-1">
+            <!-- Badges dynamically rendered -->
+          </div>
+        </div>
+
+        <!-- 3. 어른이 된 나의 모습 -->
+        <div class="p-4 sm:p-5 bg-amber-50/70 border border-amber-200/70 rounded-2xl">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-lg">👔</span>
+            <h4 class="font-extrabold text-sm sm:text-base text-amber-950">어른이 된 나의 멋진 모습</h4>
+          </div>
+          <p id="resFutureSelf" class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-7 font-medium">
+            미래 모습 설명이 들어갑니다.
+          </p>
+        </div>
+
+        <!-- 4. 찰떡 미래 직업 -->
+        <div class="p-4 sm:p-5 bg-emerald-50/70 border border-emerald-200/70 rounded-2xl">
+          <div class="flex items-center gap-2 mb-2.5">
+            <span class="text-lg">🎯</span>
+            <h4 class="font-extrabold text-sm sm:text-base text-emerald-950">내 관점과 찰떡인 미래 유망 직업</h4>
+          </div>
+          <div id="resJobs" class="flex flex-wrap gap-2 pl-7">
+            <!-- Job chips dynamically rendered -->
+          </div>
+        </div>
+
+        <!-- 5. 수업용 팁 박스 -->
+        <div class="p-3.5 bg-slate-100 rounded-xl text-[12px] text-slate-600 flex items-start gap-2">
+          <span class="text-sm">💬</span>
+          <span><strong>친구들과 나눠보기:</strong> 나와 다른 캐릭터가 나온 친구와 "Q1(기술 변화)에서 왜 다른 선택을 했는지" 서로의 관점을 이야기해 보세요!</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-6 space-y-2.5">
+        <button id="btnCopyResult" class="w-full bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white font-extrabold py-3.5 px-4 rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-md">
+          <span>📋 나의 진로 결과 텍스트 복사하기</span>
+        </button>
+        <button id="btnRestart" class="w-full bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition-all border border-slate-200">
+          다시 진단해 보기 ↺
+        </button>
+      </div>
+
+      <!-- Notification Toast -->
+      <div id="toast" class="hidden mt-3 p-3 bg-indigo-600 text-white text-xs font-bold text-center rounded-xl transition-all shadow-md">
+        ✨ 결과가 클립보드에 복사되었습니다! 과제방이나 패들렛에 붙여넣어 보세요.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="w-full py-4 text-center text-xs text-slate-400">
+    <p>중학교 3학년 진로 및 가치관 통합 탐구 프로그램 • 미래 탐험 렌즈</p>
+  </footer>
+
+  <script>
+    // 13문항 분기 트리 데이터
+    const quizFlow = {
+      Q1: {
+        text: "AI나 로봇 기술이 빠르게 발전해서 세상이 크게 바뀐대! 내 머릿속 첫 생각은?",
+        A: { text: "대박! 세상이 훨씬 재밌어지겠다. 새로운 기회를 찾아봐야지!", next: "Q2" },
+        B: { text: "조금 불안한데? 변화 속에서 중심을 잡고 대비하는 게 먼저야.", next: "Q3" }
+      },
+      Q2: {
+        text: "(기회와 변화 탐색) 내가 새로운 기회를 찾을 때 더 마음이 끌리는 쪽은?",
+        A: { text: "남들이 안 해본 새로운 걸 만들고 마음껏 도전하는 일", next: "Q4" },
+        B: { text: "사람들과 힘을 합쳐 더 나은 사회와 공익을 만드는 일", next: "Q5" }
+      },
+      Q3: {
+        text: "(안정과 대비 탐색) 변화에 대처할 때 나에게 가장 필요한 슈퍼 파워는?",
+        A: { text: "정해진 계획과 규칙을 잘 지켜서 삶을 지켜내는 안정감", next: "Q6" },
+        B: { text: "남들이 절대 따라 할 수 없는 나만의 깊이 있는 실력(스킬)", next: "Q7" }
+      },
+      Q4: {
+        text: "(도전 탐색 1) 나를 가장 신나게 만드는 학교 활동이나 프로젝트는?",
+        A: { text: "아무도 안 해본 기발한 주제로 자유롭게 판을 짜서 발표하기", next: "Q8" },
+        B: { text: "신기술이나 최신 트렌드를 활용해 인상적인 결과물 만들기", next: "Q8" }
+      },
+      Q5: {
+        text: "(상생 탐색 1) 친구들과 함께 일할 때 내가 느끼는 가장 큰 보람은?",
+        A: { text: "내 아이디어로 팀 전체에 활력을 불어넣고 이끌었을 때", next: "Q9" },
+        B: { text: "의견이 갈리는 친구들 사이를 잘 중재해서 다 같이 웃었을 때", next: "Q9" }
+      },
+      Q6: {
+        text: "(안정 탐색 1) 미래의 일터를 떠올릴 때 절대 양보할 수 없는 조건은?",
+        A: { text: "정해진 퇴근 시간과 주말이 보장되어 내 삶을 누릴 수 있는 곳", next: "Q10" },
+        B: { text: "체계적인 시스템이 갖춰져 있어서 억울한 일 없이 일할 수 있는 곳", next: "Q10" }
+      },
+      Q7: {
+        text: "(전문성 탐색 1) 내가 어떤 분야를 공부하거나 배울 때 기분이 제일 좋은 순간은?",
+        A: { text: "어려운 원리나 원인을 완전히 이해해서 내 것으로 만들었을 때", next: "Q11" },
+        B: { text: "남들보다 훨씬 더 깔끔하고 완벽한 결과물을 완성해냈을 때", next: "Q11" }
+      },
+      Q8: {
+        text: "(도전 탐색 2) 어른이 되어서 일할 때, 더 끌리는 일터의 모습은?",
+        A: { text: "눈치 보지 않고 내 아이디어를 마음껏 실험해 볼 수 있는 곳", next: "R_PIONEER" },
+        B: { text: "실패하더라도 계속 새로운 프로젝트에 도전할 수 있는 자유로운 곳", next: "R_PIONEER" }
+      },
+      Q9: {
+        text: "(상생 탐색 2) 세상을 더 좋게 만들 때, 내가 더 맡고 싶은 역할은?",
+        A: { text: "사람들에게 새로운 방향을 제시하고 이끄는 트렌드 리더", next: "Q12" },
+        B: { text: "도움이 필요한 사람들의 고민을 들어주는 따뜻한 조율사", next: "Q12" }
+      },
+      Q10: {
+        text: "(안정 탐색 2) 내가 생각하는 '가장 성공한 인생'의 모습은?",
+        A: { text: "좋아하는 사람들과 소소한 행복을 나누며 안전하고 평온하게 사는 삶", next: "Q13" },
+        B: { text: "규칙적인 일상 속에서 큰 풍파 없이 차근차근 내 몫을 해내는 삶", next: "Q13" }
+      },
+      Q11: {
+        text: "(전문성 탐색 2) 내가 사람들에게 가장 듣고 싶은 핵심 칭찬은?",
+        A: { text: "믿고 맡길 수 있는 진짜 꼼꼼하고 탄탄한 사람이야!", next: "Q13" },
+        B: { text: "와, 이 분야는 진짜 네가 최고다! 아무도 못 따라오겠어!", next: "R_MASTERY" }
+      },
+      Q12: {
+        text: "(사회적 영향력 심화) 나에게 더 큰 만족감을 주는 순간은?",
+        A: { text: "내 아이디어가 세상에 알려져서 많은 사람에게 영향을 줄 때", next: "R_PIONEER" },
+        B: { text: "내 도움으로 한 사람의 삶이 진심으로 회복되고 행복해질 때", next: "R_HARMONY" }
+      },
+      Q13: {
+        text: "(시스템 vs 장인 심화) 일을 고를 때 나에게 더 중요한 기준은?",
+        A: { text: "내 삶의 평화와 안전망을 확실히 보장해 주는 탄탄한 직장", next: "R_PROTECT" },
+        B: { text: "내 실력과 기술의 깊이를 계속해서 키워나갈 수 있는 분야", next: "R_MASTERY" }
+      }
+    };
+
+    // 4가지 관점 & 진로 캐릭터 프로필
+    const resultProfiles = {
+      R_PIONEER: {
+        id: "R_PIONEER",
+        title: "세상 개척자",
+        subtitle: "아이디어 뱅크 & 혁신가",
+        icon: "🚀",
+        heroGradient: "from-blue-600 via-indigo-600 to-violet-600",
+        perspective: "세상을 '무한한 가능성과 재밌는 도전의 놀이터'로 바라봅니다. 남들이 정해둔 틀에 갇히기보다 새로운 길을 여는 것을 즐깁니다.",
+        values: ["도전", "창의성", "자율성", "빠른 성장", "변화 선도"],
+        futureSelf: "아무도 시도하지 않은 혁신적인 아이템을 기획하거나, 급변하는 기술의 흐름을 빠르게 타서 세상에 새로운 유행과 가치를 만들어내는 멋진 리더가 됩니다.",
+        jobs: ["스타트업 창업가", "신기술 서비스 기획자", "콘텐츠 크리에이터/PD", "AI 프롬프트 엔지니어", "브랜드 마케터"]
+      },
+      R_HARMONY: {
+        id: "R_HARMONY",
+        title: "마음 연결자",
+        subtitle: "따뜻한 조율사 & 가치 공유자",
+        icon: "🤝",
+        heroGradient: "from-teal-600 via-emerald-600 to-cyan-600",
+        perspective: "세상을 '사람과 사람이 서로 돕고 공존하는 따뜻한 공간'으로 바라봅니다. 혼자만의 성공보다는 다 함께 행복해지는 세상을 꿈꿉니다.",
+        values: ["공감", "상생", "봉사", "사회적 가치", "선한 영향력"],
+        futureSelf: "갈등이 있는 곳에 해결책을 제시하고, 소외된 사람들에게 힘이 되어주며 사회를 한층 더 따뜻하고 안전하게 가꾸는 든든한 조율사가 됩니다.",
+        jobs: ["청소년 상담사/임상심리사", "학교 선생님/교육자", "사회적 기업가", "국제기구/NGO 활동가", "ESG 지속가능경영 컨설턴트"]
+      },
+      R_PROTECT: {
+        id: "R_PROTECT",
+        title: "평화 수호자",
+        subtitle: "안전망 가디언 & 든든한 멘토",
+        icon: "🛡️️",
+        heroGradient: "from-amber-600 via-orange-600 to-red-600",
+        perspective: "세상을 '질서와 예측 가능성이 필요한 소중한 시스템'으로 바라봅니다. 불필요한 위험을 줄이고 내 삶과 주변의 평화를 지키는 것을 중요하게 여깁니다.",
+        values: ["안정성", "신뢰", "워라밸", "책임감", "규칙 준수"],
+        futureSelf: "사회와 조직이 흔들리지 않도록 탄탄한 안전판 역할을 하며, 일과 삶의 균형을 누리면서 사랑하는 사람들과 소소한 행복을 지켜내는 어른이 됩니다.",
+        jobs: ["공무원/공공기관 행정가", "공인회계사/금융 자산관리사", "정보보안 전문가", "품질관리/데이터 분석가", "보건의료 행정가"]
+      },
+      R_MASTERY: {
+        id: "R_MASTERY",
+        title: "갓생 마스터",
+        subtitle: "독보적 실력파 & 깊이 있는 장인",
+        icon: "🛠️",
+        heroGradient: "from-purple-600 via-fuchsia-600 to-pink-600",
+        perspective: "세상을 '지식과 기술의 깊이를 끝없이 탐구하는 배움의 장'으로 바라봅니다. 유행에 휩쓸리지 않고 나만의 대체 불가능한 실력을 쌓는 것을 사랑합니다.",
+        values: ["전문성", "장인정신", "완성도", "자아실현", "본질 탐구"],
+        futureSelf: "자신이 맡은 분야에서 누구도 따라올 수 없는 독보적인 기술과 노하우를 갖추어, 세상이 먼저 찾아와 자문을 구하는 존경받는 스페셜리스트가 됩니다.",
+        jobs: ["소프트웨어 엔지니어/알고리즘 연구원", "신약/바이오 연구원", "순수 예술가/일러스트레이터", "전문 번역가/데이터 사이언티스트", "전문 기술 명장"]
+      }
+    };
+
+    let historyStack = [];
+    let currentQuestionKey = "Q1";
+    let currentResultData = null;
+
+    const screenIntro = document.getElementById("screenIntro");
+    const screenQuiz = document.getElementById("screenQuiz");
+    const screenResult = document.getElementById("screenResult");
+    const btnResetHeader = document.getElementById("btnResetHeader");
+
+    const badgeStep = document.getElementById("badgeStep");
+    const progressBar = document.getElementById("progressBar");
+    const pathIndicator = document.getElementById("pathIndicator");
+    const questionText = document.getElementById("questionText");
+    const btnOptionA = document.getElementById("btnOptionA");
+    const btnOptionB = document.getElementById("btnOptionB");
+    const textOptionA = document.getElementById("textOptionA");
+    const textOptionB = document.getElementById("textOptionB");
+    const btnPrev = document.getElementById("btnPrev");
+
+    const resultHero = document.getElementById("resultHero");
+    const resIcon = document.getElementById("resIcon");
+    const resTitle = document.getElementById("resTitle");
+    const resSubtitle = document.getElementById("resSubtitle");
+    const resPerspective = document.getElementById("resPerspective");
+    const resValues = document.getElementById("resValues");
+    const resFutureSelf = document.getElementById("resFutureSelf");
+    const resJobs = document.getElementById("resJobs");
+    const toast = document.getElementById("toast");
+
+    document.getElementById("btnStart").addEventListener("click", () => {
+      historyStack = [];
+      currentQuestionKey = "Q1";
+      showScreen("quiz");
+      renderQuestion();
+    });
+
+    btnResetHeader.addEventListener("click", resetToStart);
+    document.getElementById("btnRestart").addEventListener("click", resetToStart);
+
+    function resetToStart() {
+      historyStack = [];
+      currentQuestionKey = "Q1";
+      currentResultData = null;
+      showScreen("intro");
+    }
+
+    function showScreen(type) {
+      screenIntro.classList.add("hidden");
+      screenQuiz.classList.add("hidden");
+      screenResult.classList.add("hidden");
+
+      if (type === "intro") {
+        screenIntro.classList.remove("hidden");
+        btnResetHeader.classList.add("hidden");
+      } else if (type === "quiz") {
+        screenQuiz.classList.remove("hidden");
+        btnResetHeader.classList.remove("hidden");
+      } else if (type === "result") {
+        screenResult.classList.remove("hidden");
+        btnResetHeader.classList.remove("hidden");
+      }
+    }
+
+    function renderQuestion() {
+      const qData = quizFlow[currentQuestionKey];
+      if (!qData) return;
+
+      const stepNumber = historyStack.length + 1;
+      badgeStep.textContent = `STEP ${stepNumber} • ${currentQuestionKey}`;
+      questionText.textContent = qData.text;
+      textOptionA.textContent = qData.A.text;
+      textOptionB.textContent = qData.B.text;
+
+      // 예상 진행률 (3~4단계 기준)
+      const progressPercent = Math.min(Math.round((stepNumber / 4) * 100), 95);
+      progressBar.style.width = `${progressPercent}%`;
+
+      // 이전 버튼 토글
+      if (historyStack.length === 0) {
+        btnPrev.classList.add("opacity-30", "pointer-events-none");
+      } else {
+        btnPrev.classList.remove("opacity-30", "pointer-events-none");
+      }
+
+      // 탐색 경로 표시
+      const currentPath = [...historyStack.map(h => h.key), currentQuestionKey].join(" → ");
+      pathIndicator.textContent = currentPath;
+
+      // 부드러운 애니메이션
+      screenQuiz.classList.remove("fade-in-up");
+      void screenQuiz.offsetWidth;
+      screenQuiz.classList.add("fade-in-up");
+    }
+
+    function handleChoice(optionKey) {
+      const qData = quizFlow[currentQuestionKey];
+      const selected = qData[optionKey];
+
+      historyStack.push({
+        key: currentQuestionKey,
+        choice: optionKey
+      });
+
+      const nextTarget = selected.next;
+
+      if (nextTarget.startsWith("R_")) {
+        progressBar.style.width = "100%";
+        renderResult(nextTarget);
+      } else {
+        currentQuestionKey = nextTarget;
+        renderQuestion();
+      }
+    }
+
+    btnOptionA.addEventListener("click", () => handleChoice("A"));
+    btnOptionB.addEventListener("click", () => handleChoice("B"));
+
+    btnPrev.addEventListener("click", () => {
+      if (historyStack.length === 0) return;
+      const last = historyStack.pop();
+      currentQuestionKey = last.key;
+      renderQuestion();
+    });
+
+    function renderResult(resultKey) {
+      const profile = resultProfiles[resultKey];
+      currentResultData = profile;
+
+      resultHero.className = `rounded-3xl p-6 sm:p-7 text-center text-white mb-6 relative overflow-hidden bg-gradient-to-r ${profile.heroGradient} shadow-lg`;
+      resIcon.textContent = profile.icon;
+      resTitle.textContent = profile.title;
+      resSubtitle.textContent = profile.subtitle;
+      resPerspective.textContent = profile.perspective;
+      resFutureSelf.textContent = profile.futureSelf;
+
+      // 가치관 태그 생성
+      resValues.innerHTML = "";
+      profile.values.forEach(v => {
+        const span = document.createElement("span");
+        span.className = "inline-block px-3 py-1 bg-white text-indigo-700 text-xs font-bold rounded-lg border border-indigo-200 shadow-xs";
+        span.textContent = `#${v}`;
+        resValues.appendChild(span);
+      });
+
+      // 추천 직업 칩 생성
+      resJobs.innerHTML = "";
+      profile.jobs.forEach(job => {
+        const span = document.createElement("span");
+        span.className = "inline-block px-3 py-1.5 bg-white text-emerald-800 text-xs font-bold rounded-xl border border-emerald-200 shadow-xs";
+        span.textContent = job;
+        resJobs.appendChild(span);
+      });
+
+      showScreen("result");
+    }
+
+    // 결과 클립보드 복사 핸들러
+    document.getElementById("btnCopyResult").addEventListener("click", () => {
+      if (!currentResultData) return;
+
+      const pathText = historyStack.map(h => `${h.key}(${h.choice})`).join(" → ");
+      const copyText = `[미래 탐험 렌즈 진단 결과]\n\n` +
+        `• 나의 관점 캐릭터: ${currentResultData.title} (${currentResultData.subtitle})\n` +
+        `• 세상을 보는 관점: ${currentResultData.perspective}\n` +
+        `• 내 마음속 1순위 가치관: ${currentResultData.values.join(', ')}\n` +
+        `• 어른이 된 나의 멋진 모습: ${currentResultData.futureSelf}\n` +
+        `• 찰떡 미래 직업: ${currentResultData.jobs.join(', ')}\n` +
+        `• 나의 선택 경로: ${pathText}`;
+
+      const tempArea = document.createElement("textarea");
+      tempArea.value = copyText;
+      tempArea.style.position = "fixed";
+      tempArea.style.opacity = "0";
+      document.body.appendChild(tempArea);
+      tempArea.select();
+
+      try {
+        document.execCommand("copy");
+        toast.classList.remove("hidden");
+        setTimeout(() => {
+          toast.classList.add("hidden");
+        }, 3200);
+      } catch (err) {
+        console.error("복사 실패", err);
+      } finally {
+        document.body.removeChild(tempArea);
+      }
+    });
+  </script>
+</body>
+</html>
